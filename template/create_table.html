@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Table</title>
+    <style>/* General styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Navbar styling */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 10px;
+            color: white;
+        }
+        
+        .navbar a {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .username {
+            float: left;
+            padding: 10px;
+        }
+        
+        /* Admin dashboard styling */
+        .admin-dashboard {
+            padding: 20px;
+        }
+        
+        /* Add Table Button */
+        .add-table-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .add-table-btn:hover {
+            background-color: #45a049;
+        }
+        
+        /* Form styling */
+        form {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        button[type="button"], input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        button[type="button"]:hover, input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        
+        /* Table list styling */
+        .table-list {
+            margin-top: 20px;
+        }
+        
+        .table-name {
+            background-color: #f2f2f2;
+            border: none;
+            padding: 10px;
+            margin-bottom: 5px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .table-name:hover {
+            background-color: #ddd;
+        }
+        
+        .table-content {
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        </style>
+</head>
+<body>
+        <div class="navbar">
+            <span class="username">Welcome, {{ username }}!</span>
+            <a href="/dashboard">Back to Dashboard</a> <!-- Updated link -->
+            <a href="/logout">Logout</a>
+        </div>
+        <div class="admin-dashboard">
+            <h2>Create Table</h2>
+            <button onclick="showAddTableForm()" class="add-table-btn"><i class="fas fa-plus"></i> Add Table</button>
+        
+            <div id="add-table-form" style="display: none;">
+                <form action="/create_table" method="post">
+                    <label for="table-name">Table Name:</label><br>
+                    <input type="text" id="table-name" name="table_name" required><br>
+                    <div id="columns">
+                    </div>
+                    <button type="button" onclick="addColumn()">Add Column</button><br>
+                    <input type="submit" value="Create Table">
+                </form>
+            </div>
+
+            
+        
+            <!-- Existing Tables -->
+            <div class="table-list">
+                <h3>Existing Tables</h3>
+                <ul>
+                    {% for table_name in table_names %}
+                        <li>
+                            <button onclick="toggleTable('{{ table_name }}')" class="table-name">{{ table_name }}</button>
+                            <div id="{{ table_name }}" class="table-content" style="display: none;">
+                                <!-- Table content will be dynamically added here -->
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+
+    <script>
+        var columnCount = 0;
+
+        function showAddTableForm() {
+            document.getElementById("add-table-form").style.display = "block";
+        }
+
+        function addColumn() {
+            console.log("addColumn() called");
+            columnCount++;
+            var columnsDiv = document.getElementById("columns");
+            var columnDiv = document.createElement("div");
+            columnDiv.innerHTML = `
+                <label for="column-name-${columnCount}">Column Name:</label><br>
+                <input type="text" id="column-name-${columnCount}" name="column_names[]" required><br>
+                <label for="data-type-${columnCount}">Data Type:</label><br>
+                <select id="data-type-${columnCount}" name="data_types[]" required>
+                    <option value="INTEGER">INTEGER</option>
+                    <option value="TEXT">TEXT</option>
+                    <option value="REAL">REAL</option>
+                    <option value="NUMERIC">NUMERIC</option>
+                    <option value="BLOB">BLOB</option>
+                </select><br><br>
+            `;
+            columnsDiv.appendChild(columnDiv);
+            console.log("Column added");
+        }
+        
+
+        function toggleTable(tableName) {
+            var tableContent = document.getElementById(tableName);
+            if (tableContent.style.display === "none") {
+                tableContent.style.display = "block";
+                // Fetch table data via AJAX
+                fetch(`/get_table_data/${tableName}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById(tableName).innerHTML = data;
+                    })
+                    .catch(error => console.error('Error fetching table data:', error));
+            } else {
+                tableContent.style.display = "none";
+            }
+        }
+        
+    </script>
+</body>
+</html>

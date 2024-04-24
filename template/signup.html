@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLD LOAN APP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            text-decoration: none;
+            font-size: 32px;
+        }
+        .signup-form {
+            display: none;
+            margin-top: 50px;
+        }
+
+        /* General styling */
+
+        /* Form styling */
+        form {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #f4f4f4;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 20px;
+            margin: 16px 0;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 24px 30px;
+            margin: 16px 0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 32px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Optional: Add responsive styling for smaller screens */
+        @media screen and (max-width: 600px) {
+            form {
+                width: 80%;
+            }
+        }
+
+    </style>
+    <script>
+        function showSignupForm() {
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("signup-form").style.display = "block";
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        {% if 'username' in session %}
+            <a href="/dashboard">Dashboard</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="#" onclick="showSignupForm()">Signup</a>
+        {% endif %}
+    </div>
+    <div class="hero-section" id="login-form">
+        <img src="C:\Users\Smilika\Documents\DBMS PROJECT\template\Welcome_to.png" alt="imgerror">
+    </div>
+    <div class="hero-section" id="signup-form">
+        <form action="/signup" method="post">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <label for="role">Role:</label><br>
+            <select id="role" name="role">
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+                <option value="customer">Customer</option>
+            </select><br>
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+</body>
+</html>

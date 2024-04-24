@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* General styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Navbar styling */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 10px;
+            color: white;
+        }
+        
+        .navbar a {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .username {
+            float: left;
+            padding: 10px;
+        }
+        
+        /* Admin dashboard styling */
+        .admin-dashboard {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span class="username">Welcome, {{ username }}!</span>
+        <a href="/create_table">Create Table</a> <!-- Corrected link to the create_table route -->
+        <a href="/drop_table">Drop Table</a>
+        <a href="/dml_commands">DML Commands</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <div class="admin-dashboard">
+        <h2>Admin Dashboard</h2>
+        <p>Add your content here...</p>
+    </div>
+</body>
+</html>
